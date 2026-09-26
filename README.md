@@ -126,6 +126,6 @@ antes do split (estimativa otimista) e porque as métricas de recall/precision e
 ## Autores
 
 Grupo: 
-Bárbara Prado
-Leticia Rodrigues
-Gabrielle Paschoalino
+- Bárbara Prado
+- Leticia Rodrigues
+- Gabrielle Paschoalino
