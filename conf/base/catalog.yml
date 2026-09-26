@@ -1,0 +1,103 @@
+# =============================================================================
+# Data Catalog - desacopla I/O da logica dos nos.
+# Camadas seguem a convencao Kedro: 01_raw -> 02_intermediate -> 03_primary ->
+# 04_feature -> 05_model_input -> 06_models -> 07_model_output -> 08_reporting
+# Datasets NAO listados aqui sao MemoryDataset (vivem apenas durante o run).
+# =============================================================================
+
+# ---------- 01_raw -----------------------------------------------------------
+raw_modelling_data:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/diabetes-dataset-modelling.csv
+
+raw_inference_data:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/diabetes-dataset-inference.csv
+
+# ---------- 02_intermediate (data_engineering) -------------------------------
+train_raw:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/train_raw.csv
+
+test_raw:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/test_raw.csv
+
+# ---------- 03_primary (limpos: imputados + outliers tratados) ---------------
+train_clean:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/train_clean.csv
+
+test_clean:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/test_clean.csv
+
+# ---------- 04_feature ---------------------------------------------------------
+train_features:
+  type: pandas.CSVDataset
+  filepath: data/04_feature/train_features.csv
+
+test_features:
+  type: pandas.CSVDataset
+  filepath: data/04_feature/test_features.csv
+
+# ---------- 05_model_input -----------------------------------------------------
+X_train:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/X_train.csv
+
+X_test:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/X_test.csv
+
+y_train:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/y_train.csv
+
+y_test:
+  type: pandas.CSVDataset
+  filepath: data/05_model_input/y_test.csv
+
+# ---------- 06_models (artefatos ajustados APENAS no treino) -------------------
+imputer:
+  type: pickle.PickleDataset
+  filepath: data/06_models/imputer.pkl
+
+outlier_thresholds:
+  type: json.JSONDataset
+  filepath: data/06_models/outlier_thresholds.json
+
+encoder:
+  type: pickle.PickleDataset
+  filepath: data/06_models/encoder.pkl
+
+scaler:
+  type: pickle.PickleDataset
+  filepath: data/06_models/scaler.pkl
+
+model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model.pkl
+  versioned: true
+
+# ---------- 07_model_output ----------------------------------------------------
+inference_predictions:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/predictions.csv
+
+# ---------- 08_reporting -------------------------------------------------------
+model_metrics:
+  type: json.JSONDataset
+  filepath: data/08_reporting/model_metrics.json
+
+best_params:
+  type: json.JSONDataset
+  filepath: data/08_reporting/best_params.json
+
+feature_importances:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/feature_importances.csv
+
+inference_metrics:
+  type: json.JSONDataset
+  filepath: data/08_reporting/inference_metrics.json

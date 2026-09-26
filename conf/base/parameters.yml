@@ -1,0 +1,44 @@
+# =============================================================================
+# Parametros - separados do codigo (12-factor: config). Alterar aqui, nao no src.
+# =============================================================================
+
+target: Outcome
+
+# ----- data_engineering -----
+preprocessing:
+  # Colunas em que 0 e fisiologicamente impossivel -> tratado como missing.
+  # (notebook, cap. 15: zero_columns)
+  zero_as_missing:
+    - Glucose
+    - BloodPressure
+    - SkinThickness
+    - Insulin
+    - BMI
+  # KNNImputer sobre dados escalonados por RobustScaler (notebook, "Option 2")
+  knn_imputer_neighbors: 5
+  # Outliers: limites = q1 - 1.5*IQR e q3 + 1.5*IQR com q1=0.05, q3=0.95 (cap. 16)
+  outlier_q1: 0.05
+  outlier_q3: 0.95
+  outlier_iqr_factor: 1.5
+  # Regra do notebook (grab_col_names): numerica se nunique >= cat_th
+  categorical_threshold: 10
+
+split:
+  test_size: 0.30
+  random_state: 17          # identico ao notebook (cap. 20)
+
+# ----- training -----
+training:
+  # Opcoes: random_forest | logistic_regression | knn | svc | decision_tree |
+  #         adaboost | gradient_boosting | xgboost | lightgbm
+  model_type: random_forest
+  random_state: 46          # identico ao notebook
+  hyperparameter_tuning: true
+  cv_folds: 5
+  # Grid identico ao notebook (cap. 20.1.1). Ignorado se hyperparameter_tuning=false.
+  param_grid:
+    n_estimators: [100, 200, 300]
+    max_depth: [null, 5, 10]
+    min_samples_split: [2, 5, 10]
+  # Hiperparametros fixos usados quando hyperparameter_tuning=false
+  fixed_params: {}
